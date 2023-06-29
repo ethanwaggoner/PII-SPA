@@ -74,8 +74,8 @@ h2 {
   text-align: center;
 }
 
-.c  ient-container {
-  eight: 66vh;
+.client-container {
+  height: 66vh;
   width: 100%;
   margin-bottom: 10px;
   padding: 20px;
