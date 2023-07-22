@@ -1,17 +1,23 @@
 import uuid
-
+import hashlib
 from flask_security import UserMixin, RoleMixin, Security, SQLAlchemyUserDatastore
-from .db import db
+from sqlalchemy import bindparam
+
+from .database import db
 
 
 class Role(db.Model, RoleMixin):
-    id = db.column(db.Integer(), primary_key=True)
+    __tablename__ = 'roles'
+
+    id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
 
 
 class User(db.Model, UserMixin):
-    id = db.column(db.Integer(), primary_key=True)
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer(), primary_key=True)
     fs_uniquifier = db.Column(db.String(255), default=uuid.uuid4, unique=True, nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
@@ -47,26 +53,31 @@ class User(db.Model, UserMixin):
 
     @classmethod
     def add_user(cls, email, password):
-        user = cls(email, password)
+        email_hash = hashlib.sha256(email.encode('utf-8')).hexdigest()
+        user = cls(email_hash, password)
         db.session.add(user)
         db.session.commit()
         return user
 
     @classmethod
     def find_by_email(cls, email):
-        return cls.query.filter_by(email=email).first()
+        email_hash = hashlib.sha256(email.encode('utf-8')).hexdigest()
+        query = db.select(cls).where(cls.email == bindparam('email_hash'))
+        return db.session.execute(query, {'email_hash': email_hash}).first()
 
     @classmethod
     def email_exists(cls, email) -> bool:
-        return cls.query.filter_by(email=email).first() is not None
+        email_hash = hashlib.sha256(email.encode('utf-8')).hexdigest()
+        query = db.select(cls.email).where(cls.email == bindparam('email_hash'))
+        return db.session.execute(query, {'email_hash': email_hash}) is not None
 
 
 class UserRoles(db.Model):
+    __tablename__ = 'user_roles'
     id = db.Column(db.Integer(), primary_key=True)
-    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
-    role_id = db.Column(db.Integer(), db.ForeignKey('role.id'))
+    user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
+    role_id = db.Column(db.Integer(), db.ForeignKey('roles.id'))
 
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(datastore=user_datastore)
-
