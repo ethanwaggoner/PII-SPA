@@ -28,8 +28,4 @@ def create_app():
     register_extensions(app)
     configure_database(app)
 
-    @app.route('/')
-    def index():
-        return redirect(url_for('/login'))
-
     return app
