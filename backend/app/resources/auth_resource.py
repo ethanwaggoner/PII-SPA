@@ -1,24 +1,21 @@
-from flask import jsonify, request
 from flask_restx import Resource, abort, reqparse
 from werkzeug.exceptions import Unauthorized
+from ..services.auth_service import AuthService
 
 
 class LoginResource(Resource):
-    def __init__(self, auth_service):
-        super(LoginResource, self).__init__()
-        self.auth_service = auth_service
 
     def post(self):
-        if not request.is_json:
-            abort(400, message="Invalid request.")
-
-        data = request.get_json()
-        email = data.get('email')
-        password = data.get('password')
-
+        parser = reqparse.RequestParser()
+        parser.add_argument('email', type=str, required=True)
+        parser.add_argument('password', type=str, required=True)
+        args = parser.parse_args()
+        email = args['email']
+        password = args['password']
         try:
-            user = self.auth_service.authenticate_user(email, password)
-            token = self.auth_service.generate_secure_token(user.id)
+            auth_service = AuthService()
+            user = auth_service.authenticate_user(email, password)
+            token = auth_service.generate_secure_token(user.id)
             return {
                 'success': True,
                 'token': token,
@@ -26,7 +23,6 @@ class LoginResource(Resource):
             }, 200
         except Unauthorized:
             abort(401, message="Authentication failed.")
-
 
 
 

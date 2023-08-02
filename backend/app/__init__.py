@@ -1,17 +1,16 @@
-from flask import Flask
+from flask import Flask, redirect
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 
 from .models.database import db
 from .models.user_model import security, user_datastore
-from .router import Api
+from .router import api
 from backend.config import Config
 
 bcrypt = Bcrypt()
 
 
 def register_extensions(app):
-    api = Api()
     db.init_app(app)
     security.init_app(app, user_datastore)
     bcrypt.init_app(app)
@@ -30,7 +29,6 @@ def configure_database(app):
 
 def create_app():
     app = Flask(__name__)
-
     app.config.from_object(Config)
     CORS(app, origins="http://localhost:5173")
     configure_database(app)
