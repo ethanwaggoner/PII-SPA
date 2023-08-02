@@ -9,7 +9,6 @@ class Config(object):
     basedir = os.path.abspath(os.path.dirname(__file__))
 
     SECRET_KEY = os.getenv('SECRET_KEY')
-    SECURITY_PASSWORD_SALT = os.getenv('SECURITY_PASSWORD_SALT')
 
     OAUTHLIB_RELAX_TOKEN_SCOPE = True
 

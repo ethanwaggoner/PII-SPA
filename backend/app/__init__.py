@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 
 from .models.database import db
-from .models.user_model import security, user_datastore
+from .models.user_model import User, security, user_datastore
 from .router import api
 from backend.config import Config
 
@@ -21,6 +21,7 @@ def configure_database(app):
     @app.before_request
     def initialize_database():
         db.create_all()
+
 
     @app.teardown_request
     def shutdown_session(exception=None):

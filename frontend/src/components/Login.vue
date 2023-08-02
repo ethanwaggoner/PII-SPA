@@ -10,7 +10,7 @@ const router = useRouter()
 const email = ref('')
 const password = ref('')
 
-const login = async (event) => {
+const authenticate = async (event) => {
   event.preventDefault()
 
   await authStore.login({
@@ -18,7 +18,7 @@ const login = async (event) => {
     password: password.value
   })
 
-  if (authStore.store.success) {
+  if (authStore.$state.success) {
     await router.push('/overview')
   }
 
@@ -26,15 +26,15 @@ const login = async (event) => {
 </script>
 <template>
   <div id="login" class="d-flex align-items-center justify-content-center vh-100">
-    <form @submit="login">
+    <form @submit="authenticate">
     <div class="login-container">
       <h1>PII Sign In</h1>
 
       <div class="form-group">
-        <input type="text" id="email" class="form-control" placeholder="Email">
+        <input v-model="email" type="text" class="form-control" placeholder="Email">
       </div>
       <div class="form-group">
-        <input type="password" id="password" class="form-control" placeholder="Password">
+        <input v-model="password" type="password" class="form-control" placeholder="Password">
       </div>
         <button class="btn login-button" type="submit">Sign in</button>
       <div class="or-container d-flex justify-content-center align-items-center">

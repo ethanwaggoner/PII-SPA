@@ -9,14 +9,15 @@ export const useAuthStore = defineStore('authStore', {
     }),
     actions: {
         async login({email, password}) {
-            const response = await axios.post('http://127.0.0.1:5001/auth', {
-                email,
-                password
+            const response = await axios.post('http://127.0.0.1:5001/auth/', {
+                email: email,
+                password: password
             })
             if (response.data.success) {
                 this.token = response.data.token
                 this.user = response.data.user
                 axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
+                this.success = true
             }
         }
     }

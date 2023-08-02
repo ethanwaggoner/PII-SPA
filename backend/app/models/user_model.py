@@ -34,14 +34,12 @@ class User(db.Model, UserMixin):
         self.email = email
         self.password = password
 
-    def __repr__(self):
-        return '<User %r>' % self.email.split('@')[0]
-
     def to_dict(self):
         return {
             'id': self.id,
             'fs_uniquifier': self.fs_uniquifier,
             'email': self.email,
+            'password': self.password,
             'is_authenticated': self.is_authenticated,
             'last_login_at': self.last_login_at,
             'current_login_at': self.current_login_at,
@@ -61,7 +59,7 @@ class User(db.Model, UserMixin):
     @classmethod
     def find_by_email(cls, email):
         query = db.select(cls).where(cls.email == bindparam('email'))
-        return db.session.execute(query, {'email': email}).first()
+        return db.session.execute(query, {'email': email}).first()[0]
 
     @classmethod
     def email_exists(cls, email) -> bool:

@@ -1,8 +1,13 @@
+from flask import current_app
+from flask_bcrypt import Bcrypt
+
 from ..models.user_model import User
 
 import datetime
 import jwt
-from flask import current_app
+
+
+bcrypt = Bcrypt()
 
 
 class AuthService:
@@ -29,7 +34,7 @@ class AuthService:
     @staticmethod
     def authenticate_user(email, password):
         user = User.find_by_email(email)
-        if user and user.check_password(password):
+        if user and bcrypt.check_password_hash(user.password, password):
             return user
 
 
