@@ -1,22 +1,49 @@
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/store'
+
+const authStore = useAuthStore()
+const router = useRouter()
+
+
+const email = ref('')
+const password = ref('')
+
+const login = async (event) => {
+  event.preventDefault()
+
+  await authStore.login({
+    email: email.value,
+    password: password.value
+  })
+
+  if (authStore.store.success) {
+    await router.push('/overview')
+  }
+
+}
+</script>
 <template>
   <div id="login" class="d-flex align-items-center justify-content-center vh-100">
+    <form @submit="login">
     <div class="login-container">
       <h1>PII Sign In</h1>
+
       <div class="form-group">
-        <input type="text" id="username" class="form-control" placeholder="Email">
+        <input type="text" id="email" class="form-control" placeholder="Email">
       </div>
       <div class="form-group">
         <input type="password" id="password" class="form-control" placeholder="Password">
       </div>
-      <router-link to="/overview">
         <button class="btn login-button" type="submit">Sign in</button>
-      </router-link>
       <div class="or-container d-flex justify-content-center align-items-center">
         <span>or</span>
       </div>
       <button class="btn microsoft-login-button" type="submit">Sign in with Microsoft</button>
       <i class="bi bi-microsoft"></i>
-    </div>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -82,7 +109,3 @@ label {
 }
 
 </style>
-<script setup>
-import { useRouter } from 'vue-router'
-
-</script>
