@@ -9,6 +9,7 @@ class Config(object):
     basedir = os.path.abspath(os.path.dirname(__file__))
 
     SECRET_KEY = os.getenv('SECRET_KEY')
+    SECURITY_PASSWORD_SALT = os.getenv('SECURITY_PASSWORD_SALT')
 
     OAUTHLIB_RELAX_TOKEN_SCOPE = True
 
@@ -23,8 +24,6 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     SECURITY_CONFIRMABLE = True
-
-    JWT_SECRET_KEY = os.getenv('SECRET_KEY')
 
     GOOGLE_OAUTH_CLIENT_ID = os.getenv('GOOGLE_OAUTH_CLIENT_ID')
     GOOGLE_OAUTH_CLIENT_SECRET = os.getenv('GOOGLE_OAUTH_CLIENT_SECRET')

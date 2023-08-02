@@ -12,4 +12,5 @@ class PiiModel(db.Model):
     timestamp = db.Column(db.Date, nullable=False)
     is_false_positive = db.Column(db.Boolean, nullable=False)
 
-    def __init__(self, hostname, pii_type, pii_value, file_path, timestamp, )
+    def __init__(self, hostname, pii_type, pii_value, file_path, timestamp, ):
+        pass

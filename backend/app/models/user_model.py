@@ -53,23 +53,20 @@ class User(db.Model, UserMixin):
 
     @classmethod
     def add_user(cls, email, password):
-        email_hash = hashlib.sha256(email.encode('utf-8')).hexdigest()
-        user = cls(email_hash, password)
+        user = cls(email, password)
         db.session.add(user)
         db.session.commit()
         return user
 
     @classmethod
     def find_by_email(cls, email):
-        email_hash = hashlib.sha256(email.encode('utf-8')).hexdigest()
-        query = db.select(cls).where(cls.email == bindparam('email_hash'))
-        return db.session.execute(query, {'email_hash': email_hash}).first()
+        query = db.select(cls).where(cls.email == bindparam('email'))
+        return db.session.execute(query, {'email': email}).first()
 
     @classmethod
     def email_exists(cls, email) -> bool:
-        email_hash = hashlib.sha256(email.encode('utf-8')).hexdigest()
-        query = db.select(cls.email).where(cls.email == bindparam('email_hash'))
-        return db.session.execute(query, {'email_hash': email_hash}) is not None
+        query = db.select(cls.email).where(cls.email == bindparam('email'))
+        return db.session.execute(query, {'email': email}) is not None
 
 
 class UserRoles(db.Model):
