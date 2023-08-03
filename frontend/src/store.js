@@ -4,8 +4,8 @@ import axios from 'axios'
 export const useAuthStore = defineStore('authStore', {
     state: () => ({
         token: null,
-        user: null,
-        success: false
+        user_id: null,
+        is_authenticated: false,
     }),
     actions: {
         async login({email, password}) {
@@ -15,9 +15,10 @@ export const useAuthStore = defineStore('authStore', {
             })
             if (response.data.success) {
                 this.token = response.data.token
-                this.user = response.data.user
+                this.user_id = response.data.user_id
+                this.is_authenticated = response.data.is_authenticated
                 axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-                this.success = true
+
             }
         }
     }

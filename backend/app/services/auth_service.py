@@ -36,6 +36,7 @@ class AuthService:
         user = User.find_by_email(email)
         if user and bcrypt.check_password_hash(user.password, password):
             return user
+        return None
 
 
 

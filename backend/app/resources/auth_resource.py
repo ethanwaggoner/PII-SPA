@@ -10,7 +10,6 @@ class LoginResource(Resource):
         try:
             parser.add_argument('email', type=str, required=True)
             parser.add_argument('password', type=str, required=True)
-
             args = parser.parse_args()
             print(args)
             email = args['email']
@@ -19,11 +18,12 @@ class LoginResource(Resource):
             user = auth_service.authenticate_user(email, password)
             if user is None:
                 abort(401, message="Authentication failed.")
-            token = auth_service.generate_secure_token(user.id)
+            token = auth_service.generate_secure_token(user.fs_uniquifier)
             return {
                 'success': True,
                 'token': token,
-                'user': user.to_dict()
+                'user_id': user.fs_uniquifier,
+                'is_authenticated': True,
             }, 200
         except Exception:
             abort(401, message="Authentication failed.")

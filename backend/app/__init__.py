@@ -1,4 +1,4 @@
-from flask import Flask, redirect
+from flask import Flask
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 
@@ -21,7 +21,6 @@ def configure_database(app):
     @app.before_request
     def initialize_database():
         db.create_all()
-
 
     @app.teardown_request
     def shutdown_session(exception=None):

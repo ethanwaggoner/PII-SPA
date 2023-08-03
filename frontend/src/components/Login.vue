@@ -18,7 +18,7 @@ const authenticate = async (event) => {
     password: password.value
   })
 
-  if (authStore.$state.success) {
+  if (authStore.$state.is_authenticated) {
     await router.push('/overview')
   }
 
