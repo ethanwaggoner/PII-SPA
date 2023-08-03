@@ -39,7 +39,6 @@ class User(db.Model, UserMixin):
             'id': self.id,
             'fs_uniquifier': self.fs_uniquifier,
             'email': self.email,
-            'password': self.password,
             'is_authenticated': self.is_authenticated,
             'last_login_at': self.last_login_at,
             'current_login_at': self.current_login_at,

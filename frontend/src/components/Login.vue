@@ -74,34 +74,34 @@ label {
   align-items: center;
   gap: 20px;
   padding: 30px;
-  border: 3px solid #5A6D7C; /* Steel gray border */
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 0 2px #5A6D7C, 0 0 4px #5A6D7C, 0 0 8px #5A6D7C, 0 0 12px #5A6D7C; /* Steel gray glow */
+  border: 3px solid #5A6D7C;
+  border-radius: 10px;
+  box-shadow: 0 0 2px #5A6D7C, 0 0 4px #5A6D7C, 0 0 8px #5A6D7C, 0 0 12px #5A6D7C;
   background: linear-gradient(180deg, #10142c, #252c48);
   color: white;
 }
 
 .or-container {
-  color: white; /* White color for the "or" text */
+  color: white;
 }
 
 .btn {
   background: none;
-  border: 2px solid #5A6D7C; /* Steel gray border for the button */
-  border-radius: 5px; /* Rounded corners for the button */
+  border: 2px solid #5A6D7C;
+  border-radius: 5px;
   color: white;
   cursor: pointer;
   font-size: 24px;
   padding: 10px 20px;
-  transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease; /* Transition for color and border */
-  box-shadow: 0 0 2px #5A6D7C, 0 0 4px #5A6D7C; /* New: Steel gray box-shadow for the button */
+  transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+  box-shadow: 0 0 2px #5A6D7C, 0 0 4px #5A6D7C;
 }
 
 .btn:hover {
-  background-color: rgba(90, 109, 124, 0.1); /* Button hover effect */
-  color: #5A6D7C; /* Button text color changes on hover */
-  border-color: white; /* Button border color changes on hover */
-  box-shadow: 0 0 5px #5A6D7C, 0 0 15px #5A6D7C, 0 0 25px #5A6D7C, 0 0 35px #5A6D7C; /* New: Increasebox-shadow on hover */
+  background-color: rgba(90, 109, 124, 0.1);
+  color: #5A6D7C;
+  border-color: white;
+  box-shadow: 0 0 5px #5A6D7C, 0 0 15px #5A6D7C, 0 0 25px #5A6D7C, 0 0 35px #5A6D7C;
 }
 
 .form-control {
