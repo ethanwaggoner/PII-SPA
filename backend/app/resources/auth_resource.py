@@ -1,9 +1,12 @@
 from flask_restx import Resource, abort, reqparse
 from werkzeug.exceptions import Unauthorized
 from ..services.auth_service import AuthService
+from ..limiter import limiter
 
 
 class LoginResource(Resource):
+    decorators = [limiter.limit("5/minute")]
+
     def post(self):
         parser = reqparse.RequestParser()
 
@@ -11,7 +14,6 @@ class LoginResource(Resource):
             parser.add_argument('email', type=str, required=True)
             parser.add_argument('password', type=str, required=True)
             args = parser.parse_args()
-            print(args)
             email = args['email']
             password = args['password']
             auth_service = AuthService()
@@ -29,6 +31,24 @@ class LoginResource(Resource):
             abort(401, message="Authentication failed.")
 
 
+class LogoutResource(Resource):
+    decorators = [limiter.limit("5/minute")]
 
+    def post(self):
+        parser = reqparse.RequestParser()
+
+        try:
+            parser.add_argument('token', type=str, required=True)
+            args = parser.parse_args()
+            token = args['token']
+
+            auth_service = AuthService()
+            fs_uniquifier = auth_service.decode_secure_token(token)
+            if auth_service.logout_user(fs_uniquifier):
+                return {'success': True}, 200
+            else:
+                return {'success': False}, 401
+        except Unauthorized:
+            abort(401, message="Authentication failed.")
 
 

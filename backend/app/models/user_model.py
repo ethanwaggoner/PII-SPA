@@ -61,6 +61,31 @@ class User(db.Model, UserMixin):
         return db.session.execute(query, {'email': email}).first()[0]
 
     @classmethod
+    def find_by_fs_uniquifier(cls, fs_uniquifier):
+        query = db.select(cls).where(cls.fs_uniquifier == bindparam('fs_uniquifier'))
+        return db.session.execute(query, {'fs_uniquifier': fs_uniquifier}).first()[0]
+
+    @classmethod
+    def logout_user(cls):
+        cls.is_authenticated = False
+        db.session.commit()
+        if cls.is_authenticated:
+            return False
+        else:
+            return True
+
+    @classmethod
+    def login_user(cls, fs_uniquifier):
+        user = cls.find_by_fs_uniquifier(fs_uniquifier)
+        user.is_authenticated = True
+        db.session.commit()
+        if user.is_authenticated:
+            return True
+        else:
+            return False
+
+
+    @classmethod
     def email_exists(cls, email) -> bool:
         query = db.select(cls.email).where(cls.email == bindparam('email'))
         return db.session.execute(query, {'email': email}) is not None

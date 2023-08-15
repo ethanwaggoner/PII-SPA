@@ -24,8 +24,9 @@ class AuthService:
     @staticmethod
     def decode_secure_token(token):
         try:
-            payload = jwt.decode(token, current_app.config['SECRET_KEY'])
-            return payload['user_id']
+            payload = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
+            user_id = payload['user_id']
+            return {'success': True, 'fs_uniquifier': user_id}
         except jwt.ExpiredSignatureError:
             return None
         except jwt.InvalidTokenError:
@@ -35,8 +36,18 @@ class AuthService:
     def authenticate_user(email, password):
         user = User.find_by_email(email)
         if user and bcrypt.check_password_hash(user.password, password):
+            user.login_user(user.fs_uniquifier)
             return user
         return None
+
+    @staticmethod
+    def logout_user(fs_uniquifier):
+        user = User.find_by_fs_uniquifier(fs_uniquifier)
+        if user:
+            user.logout_user()
+        if user.is_authenticated:
+            return False
+        return True
 
 
 

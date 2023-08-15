@@ -6,6 +6,7 @@ from .models.database import db
 from .models.user_model import User, security, user_datastore
 from .router import api
 from backend.config import Config
+from .limiter import limiter
 
 bcrypt = Bcrypt()
 
@@ -15,6 +16,7 @@ def register_extensions(app):
     security.init_app(app, user_datastore)
     bcrypt.init_app(app)
     api.init_app(app)
+    limiter.init_app(app)
 
 
 def configure_database(app):
@@ -35,3 +37,8 @@ def create_app():
     register_extensions(app)
 
     return app
+
+
+
+
+
