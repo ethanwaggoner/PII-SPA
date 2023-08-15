@@ -20,6 +20,18 @@ export const useAuthStore = defineStore('authStore', {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
 
             }
+        },
+
+        async logout() {
+            const response = await axios.post('http://127.0.0.1:5001/deauth/', {
+                token: this.token,
+            })
+            if (response.data.success) {
+                this.token = null
+                this.user_id = null
+                this.is_authenticated = false
+                axios.defaults.headers.common['Authorization'] = null
+            }
         }
     }
 })
