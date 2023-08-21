@@ -65,14 +65,9 @@ class User(db.Model, UserMixin):
         query = db.select(cls).where(cls.fs_uniquifier == bindparam('fs_uniquifier'))
         return db.session.execute(query, {'fs_uniquifier': fs_uniquifier}).first()[0]
 
-    @classmethod
-    def logout_user(cls):
-        cls.is_authenticated = False
+    def logout_user(self):
+        self.is_authenticated = False
         db.session.commit()
-        if cls.is_authenticated:
-            return False
-        else:
-            return True
 
     @classmethod
     def login_user(cls, fs_uniquifier):

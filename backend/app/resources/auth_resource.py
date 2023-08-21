@@ -41,7 +41,6 @@ class LogoutResource(Resource):
             parser.add_argument('token', type=str, required=True)
             args = parser.parse_args()
             token = args['token']
-
             auth_service = AuthService()
             fs_uniquifier = auth_service.decode_secure_token(token)
             if auth_service.logout_user(fs_uniquifier):

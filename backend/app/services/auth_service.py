@@ -1,5 +1,6 @@
 from flask import current_app
 from flask_bcrypt import Bcrypt
+from flask_security import logout_user
 
 from ..models.user_model import User
 
@@ -25,8 +26,8 @@ class AuthService:
     def decode_secure_token(token):
         try:
             payload = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
-            user_id = payload['user_id']
-            return {'success': True, 'fs_uniquifier': user_id}
+            fs_uniquifier = payload['user_id']
+            return fs_uniquifier
         except jwt.ExpiredSignatureError:
             return None
         except jwt.InvalidTokenError:
@@ -43,7 +44,7 @@ class AuthService:
     @staticmethod
     def logout_user(fs_uniquifier):
         user = User.find_by_fs_uniquifier(fs_uniquifier)
-        if user:
+        if user and user.is_authenticated:
             user.logout_user()
         if user.is_authenticated:
             return False

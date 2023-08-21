@@ -24,8 +24,6 @@ class Config(object):
 
     SECURITY_CONFIRMABLE = True
 
-    GOOGLE_OAUTH_CLIENT_ID = os.getenv('GOOGLE_OAUTH_CLIENT_ID')
-    GOOGLE_OAUTH_CLIENT_SECRET = os.getenv('GOOGLE_OAUTH_CLIENT_SECRET')
 
 
 class ProductionConfig(Config):

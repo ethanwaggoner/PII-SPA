@@ -30,7 +30,7 @@ export const useAuthStore = defineStore('authStore', {
                 this.token = null
                 this.user_id = null
                 this.is_authenticated = false
-                axios.defaults.headers.common['Authorization'] = null
+                axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
             }
         }
     }

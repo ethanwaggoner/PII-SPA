@@ -5,22 +5,22 @@ import { useAuthStore} from "@/store";
 const authStore = useAuthStore()
 const router = useRouter()
 
-const logout = async () => {
-  await authStore.logout()
-  await router.push('/')
+const logout = () => {
+  authStore.logout()
+  router.push('/')
 }
 
 </script>
 
 <template>
-  <nav class="nav-bar">
-    <div class="nav-right">
-      <button class="nav-button">Profile</button>
-      <router-link to="/">
-        <button class="nav-button">Sign Out</button>
-      </router-link>
-    </div>
-  </nav>
+    <nav class="nav-bar">
+      <form @submit="logout">
+        <div class="nav-right">
+          <button class="nav-button" type="submit">Profile</button>
+            <button class="nav-button">Sign Out</button>
+         </div>
+       </form>
+    </nav>
 </template>
 
 <style scoped>
